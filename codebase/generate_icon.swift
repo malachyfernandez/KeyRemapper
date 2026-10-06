@@ -11,6 +11,15 @@ let rect = NSRect(x: 0, y: 0, width: size, height: size)
 let image = NSImage(size: rect.size)
 image.lockFocus()
 
+// macOS icon grid: the visible squircle occupies ~80.5% of the canvas
+// with transparent margin around it. Drawing edge-to-edge makes the
+// icon render oversized in the Dock/Launchpad — shrink all drawing.
+let xf = NSAffineTransform()
+xf.translateX(by: size / 2, yBy: size / 2)
+xf.scale(by: 0.805)
+xf.translateX(by: -size / 2, yBy: -size / 2)
+xf.concat()
+
 // ── Squircle background: dark gray gradient (system dark theme) ──
 let radius = size * 0.224
 let bgPath = NSBezierPath(roundedRect: rect, xRadius: radius, yRadius: radius)
