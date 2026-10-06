@@ -987,6 +987,9 @@ main {
 .remap-item:hover {
     background: var(--row-hover);
 }
+.remap-item.clickable {
+    cursor: pointer;
+}
 
 .remap-item-info {
     display: flex;

@@ -78,6 +78,15 @@ const US_KEY_NAMES = {
     36: "return", 48: "tab", 49: "space", 51: "delete", 53: "escape",
 };
 
+// Reverse map for opening a stored remap in the editor
+const NAME_TO_KEYCODE = Object.fromEntries(
+    Object.entries(US_KEY_NAMES).map(([c, n]) => [n, +c])
+);
+
+// Modifiers the editor can represent — remaps carrying cmd/fn can be
+// listed but not round-tripped through the four toggle pills.
+const EDITABLE_MODS = new Set(["shift", "alt", "ctrl", "capslock"]);
+
 // ── State ───────────────────────────────────────────────────────
 let layoutData = null;       // keyboard layout from Swift helper
 let remaps = [];             // current remaps from keyremaps.lua
@@ -557,10 +566,30 @@ function renderRemaps() {
         delBtn.className = "remap-delete";
         delBtn.textContent = "✕";
         delBtn.title = "Delete remap";
-        delBtn.addEventListener("click", () => deleteRemap(i));
+        delBtn.addEventListener("click", (e) => { e.stopPropagation(); deleteRemap(i); });
 
         item.appendChild(info);
         item.appendChild(delBtn);
+
+        // Click to edit — same as pressing that combo on the keyboard:
+        // light the modifier pills, select the key, open the panel.
+        const editable = r.modifiers.every(m => EDITABLE_MODS.has(m));
+        const code = NAME_TO_KEYCODE[r.key] ?? (/^\d+$/.test(r.key) ? +r.key : undefined);
+        if (editable && code !== undefined) {
+            item.classList.add("clickable");
+            info.addEventListener("click", () => {
+                toggleMods = {
+                    shift: r.modifiers.includes("shift"),
+                    option: r.modifiers.includes("alt"),
+                    control: r.modifiers.includes("ctrl"),
+                    caps: r.modifiers.includes("capslock"),
+                };
+                updateModButtons();
+                updateKeyChars();
+                selectKey(code, { ...effectiveMods() });
+            });
+        }
+
         container.appendChild(item);
     });
 }
