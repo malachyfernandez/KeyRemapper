@@ -16,7 +16,7 @@ const KEYBOARD_LAYOUT = [
         { code: 15, w: 1 }, { code: 17, w: 1 }, { code: 16, w: 1 },
         { code: 32, w: 1 }, { code: 34, w: 1 }, { code: 31, w: 1 },
         { code: 35, w: 1 }, { code: 33, w: 1 }, { code: 30, w: 1 },
-        { code: 42, w: 1.5, special: true, label: "\\" },
+        { code: 42, w: 1.5 },
     ],
     [ // Caps row
         { code: 57, w: 1.75, special: true, label: "Caps" },
@@ -195,6 +195,16 @@ async function exportRemaps() {
     return res.json();
 }
 
+async function importRemaps(file) {
+    const content = await file.text();
+    const res = await fetch("/api/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: file.name, content }),
+    });
+    return res.json();
+}
+
 // Open a URL in the real default browser — window.open is a no-op
 // inside the app's WKWebView, so we bounce through the native bridge.
 function openExternal(url) {
@@ -300,6 +310,37 @@ function setupSettings() {
         } catch (e) {
             row.style.display = "";
             status.textContent = "Export failed";
+        }
+    });
+
+    const importInput = document.getElementById("import-file");
+    document.getElementById("btn-import").addEventListener("click", () => importInput.click());
+    importInput.addEventListener("change", async () => {
+        const status = document.getElementById("export-status");
+        const row = document.getElementById("export-status-row");
+        const file = importInput.files[0];
+        importInput.value = "";
+        if (!file) return;
+        if (!file.name.toLowerCase().endsWith(".lua")) {
+            row.style.display = "";
+            status.textContent = "Needs a .lua file";
+            return;
+        }
+        try {
+            const result = await importRemaps(file);
+            row.style.display = "";
+            if (result.ok) {
+                remaps = result.remaps || [];
+                renderRemaps();
+                updateKeyRemapIndicators();
+                reloadHS();
+                status.textContent = `Imported ${remaps.length} remap${remaps.length === 1 ? "" : "s"}`;
+            } else {
+                status.textContent = result.error || "Import failed";
+            }
+        } catch (e) {
+            row.style.display = "";
+            status.textContent = "Import failed";
         }
     });
 }
@@ -524,25 +565,59 @@ function renderRemaps() {
     });
 }
 
+// ── Toast ───────────────────────────────────────────────────────
+let toastTimer = null;
+function showToast(msg) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+function remapLabel(r) {
+    const modSymbols = { shift: "⇧", alt: "⌥", ctrl: "⌃", cmd: "⌘", capslock: "⇪" };
+    const mods = r.modifiers.map(m => modSymbols[m] || m).join("");
+    return mods ? mods + " " + r.key : r.key;
+}
+
 async function deleteRemap(index) {
+    const removed = remaps[index];
     remaps.splice(index, 1);
     await saveRemaps();
     renderRemaps();
     updateKeyRemapIndicators();
     reloadHS();
+    showToast(`Removed ${remapLabel(removed)}`);
 }
 
 async function saveRemap() {
     if (selectedKeyCode === null) return;
 
     const output = document.getElementById("remap-output").value;
-    if (!output) return;
 
     const keyName = getHSKeyName(selectedKeyCode);
     const hsMods = getHSMods(selectedMods);
 
     // Find and update existing, or add new
     const existingIdx = remaps.findIndex(r => r.key === keyName && modsMatch(r.modifiers, selectedMods));
+
+    // Saving an empty output over an existing remap removes it —
+    // same as the ✕ button in the list.
+    if (!output) {
+        if (existingIdx >= 0) {
+            const removed = remaps[existingIdx];
+            remaps.splice(existingIdx, 1);
+            await saveRemaps();
+            renderRemaps();
+            updateKeyRemapIndicators();
+            reloadHS();
+            showToast(`Removed ${remapLabel(removed)}`);
+            cancelRemap();
+        }
+        return;
+    }
+
     const remap = { modifiers: hsMods, key: keyName, output };
 
     if (existingIdx >= 0) {
@@ -565,6 +640,11 @@ function cancelRemap() {
     document.querySelectorAll(".key.selected").forEach(el => el.classList.remove("selected"));
     selectedKeyCode = null;
     selectedMods = null;
+    // Clear clicked (toggled) modifiers — the pills would otherwise stay
+    // lit even though nothing is pressed or being edited anymore.
+    toggleMods = { shift: false, option: false, control: false, caps: false };
+    updateModButtons();
+    updateKeyChars();
 }
 
 // ── Modifier toggle buttons (on-screen) ───────────────────────
@@ -647,9 +727,20 @@ function setupKeyCapture() {
         }
     });
 
-    // When a physical modifier key is released, update state and unhighlight
+    // When a physical modifier key is released, update state and unhighlight.
+    // If that modifier was also toggled on by a click, the release clears the
+    // toggle too — press-and-release means "done with it".
+    const MOD_RELEASE_CODES = {
+        ShiftLeft: "shift", ShiftRight: "shift",
+        AltLeft: "option", AltRight: "option",
+        ControlLeft: "control", ControlRight: "control",
+        CapsLock: "caps",
+    };
     document.addEventListener("keyup", (e) => {
         if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+
+        const toggled = MOD_RELEASE_CODES[e.code];
+        if (toggled) toggleMods[toggled] = false;
 
         updatePhysicalMods(e);
         updateModButtons();

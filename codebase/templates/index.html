@@ -133,6 +133,11 @@
                         <span class="row-label">keyremaps.lua</span>
                         <button class="pill-btn" id="btn-export">Export to Downloads…</button>
                     </div>
+                    <div class="row">
+                        <span class="row-label">Import</span>
+                        <button class="pill-btn" id="btn-import">Import .lua…</button>
+                        <input type="file" id="import-file" accept=".lua" style="display:none">
+                    </div>
                     <div class="row" id="export-status-row" style="display:none">
                         <span class="row-label"></span>
                         <span id="export-status" class="row-value"></span>
@@ -215,5 +220,6 @@
         </main>
     </div>
     <script src="/app.js"></script>
+    <div id="toast" class="toast"></div>
 </body>
 </html>

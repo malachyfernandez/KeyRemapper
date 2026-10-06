@@ -374,6 +374,33 @@ class Handler(SimpleHTTPRequestHandler):
                 self._json({"ok": True, "path": str(target)})
             except Exception as e:
                 self._json({"error": str(e)}, status=500)
+        elif path == "/api/import":
+            # Replace keyremaps.lua with an uploaded .lua file. Accepts any
+            # filename as long as it's a .lua that parses as remaps — the
+            # content is normalized through generate_remaps_lua.
+            try:
+                length = int(self.headers.get("Content-Length", 0))
+                data = json.loads(self.rfile.read(length))
+                name = str(data.get("name", ""))
+                content = str(data.get("content", ""))
+                if not name.lower().endswith(".lua"):
+                    self._json({"error": "Needs a .lua file"}, status=400)
+                    return
+                looks_like_remaps = (
+                    "local remaps" in content
+                    or "hs.hotkey.bind" in content
+                    or "KEY REMAPS" in content
+                )
+                parsed = parse_remaps(content)
+                # Accept parseable content (markers optional — files may be
+                # renamed/edited) or an empty-but-well-formed remaps file.
+                if not parsed and not looks_like_remaps:
+                    self._json({"error": "That file doesn't look like a keyremaps file"}, status=400)
+                    return
+                write_remaps(parsed)
+                self._json({"ok": True, "remaps": parsed})
+            except Exception as e:
+                self._json({"error": str(e)}, status=500)
         elif path == "/api/restart-app":
             # Full app restart: spawn a detached watchdog process that
             # kills this app's entire process group (Swift host + this
