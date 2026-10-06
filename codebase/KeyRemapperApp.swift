@@ -221,7 +221,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         // Create the window
-        let contentRect = NSRect(x: 0, y: 0, width: 1100, height: 720)
+        let contentRect = NSRect(x: 0, y: 0, width: 1240, height: 760)
         let styleMask: NSWindow.StyleMask = [
             .titled, .closable, .miniaturizable, .resizable,
             .fullSizeContentView,
@@ -303,7 +303,7 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         config.setURLSchemeHandler(handler, forURLScheme: "keyremapper")
         config.preferences.setValue(true, forKey: "developerExtrasEnabled")
 
-        let contentRect = window?.contentView?.bounds ?? NSRect(x: 0, y: 0, width: 1100, height: 720)
+        let contentRect = window?.contentView?.bounds ?? NSRect(x: 0, y: 0, width: 1240, height: 760)
         let wv = WKWebView(frame: contentRect, configuration: config)
         wv.autoresizingMask = [.width, .height]
         wv.navigationDelegate = self
