@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KeyRemapper</title>
+    <script>
+        // Apply persisted theme before first paint (default: apple).
+        try {
+            var t = localStorage.getItem("keyremapper_theme");
+            if (t) document.documentElement.dataset.theme = t;
+        } catch (e) {}
+    </script>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <!-- Welcome overlay (shown once on launch if Hammerspoon detection
+         fails the first time; pressing Enter reloads to re-check) -->
+    <div id="welcome" class="onboarding hidden">
+        <div class="onboarding-card welcome-card">
+            <div class="onboarding-icon">⌨</div>
+            <h1>Welcome to KeyRemapper</h1>
+            <p class="onboarding-subtitle">Press Enter to continue.</p>
+            <button id="btn-welcome-enter" class="continue-btn">Enter</button>
+        </div>
+    </div>
+
+    <!-- Onboarding overlay (shown if Hammerspoon is not installed) -->
+    <div id="onboarding" class="onboarding hidden">
+        <div class="onboarding-card">
+            <button id="btn-refresh-check" class="refresh-btn" title="Re-check setup">↻ Re-check</button>
+            <div class="onboarding-icon">⌨</div>
+            <h1>Welcome to KeyRemapper</h1>
+            <p class="onboarding-subtitle">KeyRemapper needs Hammerspoon to remap keys. Here's how to get set up:</p>
+
+            <div class="onboarding-steps">
+                <div class="step" id="step-install">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Install Hammerspoon</h3>
+                        <p>Download it from <a href="https://hammerspoon.org" onclick="openExternal('https://hammerspoon.org'); return false;">hammerspoon.org</a> and drag it to your Applications folder.</p>
+                        <button class="step-btn" onclick="openExternal('https://hammerspoon.org')">Download Hammerspoon ↗</button>
+                    </div>
+                    <div class="step-status" id="status-install">—</div>
+                </div>
+
+                <div class="step" id="step-init">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Create a config file</h3>
+                        <p>KeyRemapper can create the <code>~/.hammerspoon/init.lua</code> file for you.</p>
+                        <button class="step-btn" id="btn-create-init">Create config file</button>
+                    </div>
+                    <div class="step-status" id="status-init">—</div>
+                </div>
+            </div>
+
+            <button id="btn-continue-anyway" class="continue-btn hidden">Continue anyway →</button>
+        </div>
+    </div>
+
+    <!-- Troubleshoot sheet -->
+    <div id="troubleshoot" class="sheet-overlay hidden">
+        <div class="sheet">
+            <div class="sheet-header">
+                <h2>Troubleshoot</h2>
+                <button id="troubleshoot-close" class="sheet-close" title="Close">✕</button>
+            </div>
+
+            <div class="group">
+                <div class="group-label trouble-label">"My remaps don't work or are out of date"</div>
+                <div class="card trouble-card">
+                    <video class="trouble-video" src="/videos/hammerspood-reload.mp4"
+                           autoplay loop muted playsinline></video>
+                    <p class="trouble-caption">Click the tiny hammer in your menu bar, then hit <b>Reload Config</b>. That's it — back in business.</p>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-label trouble-label">"The hammer icon isn't showing"</div>
+                <div class="card trouble-card">
+                    <video class="trouble-video" src="/videos/hammerspood-no-hammer-icon.mp4"
+                           autoplay loop muted playsinline></video>
+                    <p class="trouble-caption">No hammer? No problem — it's probably just hiding up there. Here's how to call it back.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings sheet -->
+    <div id="settings" class="sheet-overlay hidden">
+        <div class="sheet">
+            <div class="sheet-header">
+                <h2>Settings</h2>
+                <button id="settings-close" class="sheet-close" title="Close">✕</button>
+            </div>
+
+            <div class="group">
+                <div class="group-label">Appearance</div>
+                <div class="card">
+                    <div class="row">
+                        <span class="row-label">Theme</span>
+                        <div class="segmented" id="theme-seg">
+                            <button class="seg" data-theme="apple">System</button>
+                            <button class="seg" data-theme="midnight">Midnight</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-label">Keyboard</div>
+                <div class="card">
+                    <div class="row">
+                        <span class="row-label">Layout</span>
+                        <span id="layout-name" class="row-value">Loading…</span>
+                    </div>
+                    <div class="row">
+                        <span class="row-label">Detection</span>
+                        <button class="pill-btn" id="btn-refresh-layout">Refresh Layout</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-label">Remaps</div>
+                <div class="card">
+                    <div class="row">
+                        <span class="row-label">Active remaps</span>
+                        <span id="remap-count" class="row-value">0</span>
+                    </div>
+                    <div class="row">
+                        <span class="row-label">keyremaps.lua</span>
+                        <button class="pill-btn" id="btn-export">Export to Downloads…</button>
+                    </div>
+                    <div class="row" id="export-status-row" style="display:none">
+                        <span class="row-label"></span>
+                        <span id="export-status" class="row-value"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="group">
+                <div class="group-label">Hammerspoon</div>
+                <div class="card">
+                    <div class="row">
+                        <span class="row-label">Config</span>
+                        <button class="pill-btn" id="btn-settings-reload">Reload Hammerspoon</button>
+                    </div>
+                    <div class="row">
+                        <span class="row-label">init.lua</span>
+                        <button class="pill-btn" id="btn-repair-init">Create / Repair</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="app">
+        <main>
+            <section class="keyboard-section">
+                <div class="section-actions">
+                    <button id="troubleshoot-btn" class="tool-btn tool-btn-label" title="Troubleshoot" aria-label="Troubleshoot">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.2"/><path d="M9.3 9.4a2.7 2.7 0 0 1 5.4.6c0 1.6-1.5 2.1-2.3 2.7-.3.3-.4.6-.4 1.1"/><circle cx="12" cy="16.8" r="1.15" fill="currentColor" stroke="none"/></svg>
+                        <span>Troubleshoot</span>
+                    </button>
+                    <button id="settings-btn" class="tool-btn" title="Settings" aria-label="Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.24.6.86 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                    </button>
+                </div>
+
+                <div class="modifier-bar">
+                    <span class="mod-label">Preview:</span>
+                    <button class="mod-btn" data-mod="shift">⇧ Shift</button>
+                    <button class="mod-btn" data-mod="option">⌥ Option</button>
+                    <button class="mod-btn" data-mod="control">⌃ Control</button>
+                    <button class="mod-btn" data-mod="caps">⇪ Caps</button>
+                    <button class="mod-btn clear-btn" id="clear-mods">Clear</button>
+                    <span class="hint">Press a key on your keyboard or click a key to remap it</span>
+                </div>
+
+                <div id="keyboard" class="keyboard"></div>
+                <div id="focus-overlay" class="focus-overlay">
+                    <div class="focus-overlay-content">
+                        <span class="focus-overlay-icon">⌨</span>
+                        <span class="focus-overlay-text">Click to capture keyboard input</span>
+                    </div>
+                </div>
+
+                <div id="remap-panel" class="remap-panel hidden">
+                    <div class="remap-panel-content">
+                        <div class="remap-info">
+                            <div class="remap-combo" id="remap-combo">—</div>
+                            <div class="remap-current">
+                                <span class="muted">OS types:</span>
+                                <span id="remap-os-char" class="char-display">—</span>
+                                <span id="remap-existing" class="existing-badge hidden">remapped</span>
+                            </div>
+                        </div>
+                        <div class="remap-input-row">
+                            <input type="text" id="remap-output" placeholder="Type new output…" autocomplete="off" spellcheck="false">
+                            <button id="remap-save" class="save-btn">Save</button>
+                            <button id="remap-cancel" class="cancel-btn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <aside class="remaps-sidebar">
+                <h2>Active Remaps</h2>
+                <div id="remaps-container" class="remaps-list">
+                    <p class="muted empty-msg">No remaps yet. Select a key to begin.</p>
+                </div>
+            </aside>
+        </main>
+    </div>
+    <script src="/app.js"></script>
+</body>
+</html>

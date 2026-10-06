@@ -1,0 +1,1094 @@
+/* ── KeyRemapper ─────────────────────────────────────────────── */
+/* Themes: "apple" (default, follows system light/dark) and
+   "midnight" (the original purple dark theme).                    */
+
+/* ── Apple theme — dark (default) ────────────────────────────── */
+:root {
+    --bg: #232326;
+    --surface: #2c2c30;
+    --surface-2: #3a3a3f;
+    --card: #2f2f34;
+    --card-border: rgba(255, 255, 255, 0.07);
+    --card-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --sidebar-bg: rgba(30, 30, 33, 0.78);
+    --key-bg: #45454b;
+    --key-bg-hover: #505058;
+    --key-border: rgba(255, 255, 255, 0.09);
+    --key-text: #ececf1;
+    --key-text-dim: #9a9aa2;
+    --key-radius: 6px;
+    --key-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.07), 0 1px 1px rgba(0, 0, 0, 0.3);
+    --accent: #0a84ff;
+    --accent-dim: rgba(10, 132, 255, 0.18);
+    --accent-glow: rgba(10, 132, 255, 0.35);
+    --danger: #ff453a;
+    --text: #f2f2f6;
+    --muted: #9a9aa2;
+    --glass-bg: rgba(60, 60, 66, 0.45);
+    --glass-border: rgba(255, 255, 255, 0.16);
+    --glass-text: rgba(255, 255, 255, 0.92);
+    --lg-tint: rgba(255, 255, 255, 0.18);
+    --lg-shine-hi: rgba(255, 255, 255, 0.55);
+    --lg-shine-lo: rgba(255, 255, 255, 0.30);
+    --tb-icon: rgba(255, 255, 255, 0.5);
+    --input-bg: rgba(0, 0, 0, 0.22);
+    --overlay-bg: rgba(0, 0, 0, 0.45);
+    --focus-bg: rgba(20, 20, 24, 0.72);
+    --seg-bg: rgba(118, 118, 128, 0.24);
+    --seg-active: #636366;
+    --seg-active-text: #ffffff;
+    --pill-bg: rgba(118, 118, 128, 0.22);
+    --pill-border: rgba(255, 255, 255, 0.08);
+    --row-hover: rgba(120, 120, 128, 0.16);
+    --key-size: 50px;
+    --key-gap: 5px;
+    --radius: 8px;
+    --transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Apple theme — light ─────────────────────────────────────── */
+@media (prefers-color-scheme: light) {
+    :root:not([data-theme="midnight"]) {
+        --bg: #ececef;
+        --surface: #ffffff;
+        --surface-2: #f0f0f3;
+        --card: #ffffff;
+        --card-border: rgba(0, 0, 0, 0.07);
+        --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        --sidebar-bg: rgba(245, 245, 248, 0.78);
+        --key-bg: #ffffff;
+        --key-bg-hover: #f3f3f5;
+        --key-border: rgba(0, 0, 0, 0.13);
+        --key-text: #1d1d1f;
+        --key-text-dim: #8e8e93;
+        --key-shadow: 0 1px 1px rgba(0, 0, 0, 0.10), inset 0 1px 0 #ffffff;
+        --accent: #007aff;
+        --accent-dim: rgba(0, 122, 255, 0.12);
+        --accent-glow: rgba(0, 122, 255, 0.28);
+        --danger: #ff3b30;
+        --text: #1d1d1f;
+        --muted: #6e6e73;
+        --glass-bg: rgba(255, 255, 255, 0.5);
+        --glass-border: rgba(0, 0, 0, 0.09);
+        --glass-text: rgba(0, 0, 0, 0.72);
+        --lg-tint: rgba(255, 255, 255, 0.45);
+        --lg-shine-hi: rgba(255, 255, 255, 0.95);
+        --lg-shine-lo: rgba(255, 255, 255, 0.55);
+        --tb-icon: rgba(0, 0, 0, 0.45);
+        --input-bg: rgba(0, 0, 0, 0.045);
+        --overlay-bg: rgba(0, 0, 0, 0.22);
+        --focus-bg: rgba(236, 236, 240, 0.72);
+        --seg-bg: rgba(118, 118, 128, 0.12);
+        --seg-active: #ffffff;
+        --seg-active-text: #1d1d1f;
+        --pill-bg: rgba(118, 118, 128, 0.12);
+        --pill-border: rgba(0, 0, 0, 0.06);
+        --row-hover: rgba(120, 120, 128, 0.14);
+    }
+}
+
+/* ── Midnight theme (original) ───────────────────────────────── */
+:root[data-theme="midnight"] {
+    --bg: #0a0a0f;
+    --surface: #13131c;
+    --surface-2: #1a1a28;
+    --card: #13131c;
+    --card-border: #2a2a40;
+    --card-shadow: none;
+    --sidebar-bg: #13131c;
+    --key-bg: #1e1e30;
+    --key-bg-hover: #28283e;
+    --key-border: #2a2a40;
+    --key-text: #b8b8d0;
+    --key-text-dim: #666680;
+    --key-radius: 8px;
+    --key-shadow: none;
+    --accent: #7b6ef6;
+    --accent-dim: rgba(123, 110, 246, 0.15);
+    --accent-glow: rgba(123, 110, 246, 0.35);
+    --danger: #f06292;
+    --text: #e0e0f0;
+    --muted: #6a6a85;
+    --glass-bg: rgba(30, 30, 48, 0.6);
+    --glass-border: #2a2a40;
+    --glass-text: #e0e0f0;
+    --lg-tint: rgba(255, 255, 255, 0.09);
+    --lg-shine-hi: rgba(255, 255, 255, 0.4);
+    --lg-shine-lo: rgba(255, 255, 255, 0.18);
+    --tb-icon: #6a6a85;
+    --input-bg: #0a0a0f;
+    --overlay-bg: rgba(0, 0, 0, 0.85);
+    --focus-bg: rgba(15, 15, 20, 0.75);
+    --seg-bg: #1a1a28;
+    --seg-active: #7b6ef6;
+    --seg-active-text: #ffffff;
+    --pill-bg: #1a1a28;
+    --pill-border: #2a2a40;
+    --row-hover: #1a1a28;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* ── Onboarding overlay ──────────────────────────────────────── */
+
+.onboarding {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.onboarding-card {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow), 0 12px 40px rgba(0, 0, 0, 0.35);
+    padding: 40px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.onboarding-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.onboarding-card h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.onboarding-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+.onboarding-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.step {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    background: var(--surface-2);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+}
+
+.step.done {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.step.done .step-number {
+    background: var(--accent);
+    font-size: 0;
+}
+
+.step.done .step-number::after {
+    content: "✓";
+    font-size: 14px;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.step-content p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 8px;
+}
+
+.step-content code {
+    background: var(--input-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--accent);
+}
+
+.step-content a {
+    color: var(--accent);
+}
+
+.step-btn {
+    background: var(--pill-bg);
+    border: 1px solid var(--pill-border);
+    color: var(--accent);
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.step-btn:hover {
+    border-color: var(--accent);
+}
+
+.step-status {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    white-space: nowrap;
+}
+
+.step.done .step-status {
+    color: var(--accent);
+}
+
+.refresh-btn {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    background: var(--pill-bg);
+    border: 1px solid var(--pill-border);
+    color: var(--muted);
+    padding: 5px 12px;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.refresh-btn:hover {
+    border-color: var(--accent);
+}
+
+.continue-btn {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    padding: 8px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 12px;
+    transition: var(--transition);
+}
+
+.continue-btn:hover { filter: brightness(1.12); }
+
+/* ── Welcome overlay (reload-once fallback) ──────────────────── */
+
+.welcome-card {
+    max-width: 420px;
+}
+
+.welcome-card .continue-btn {
+    margin-top: 8px;
+    padding: 10px 40px;
+    font-size: 16px;
+}
+
+/* ── Settings sheet ──────────────────────────────────────────── */
+
+.sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--overlay-bg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    z-index: 900;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 9vh 20px 20px;
+}
+
+.sheet {
+    background: var(--bg);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow), 0 18px 60px rgba(0, 0, 0, 0.45);
+    width: min(480px, 94vw);
+    max-height: 82vh;
+    overflow-y: auto;
+    padding: 0 20px 24px;
+    animation: sheetIn 180ms ease-out;
+}
+
+@keyframes sheetIn {
+    from { opacity: 0; transform: translateY(-14px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 0 14px;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 2;
+}
+
+.sheet-header h2 {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+.sheet-close {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: none;
+    background: var(--seg-bg);
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition);
+}
+
+.sheet-close:hover { color: var(--text); }
+
+.group { margin-bottom: 18px; }
+.group:last-child { margin-bottom: 0; }
+
+/* ── Troubleshoot sheet ───────────────────────────────────────── */
+
+/* Bigger, readable section titles inside the troubleshoot sheet —
+   needs .group-label.trouble-label specificity since .group-label
+   is defined later in this file. */
+.group-label.trouble-label {
+    font-size: 16px;
+    font-weight: 650;
+    color: var(--text);
+    letter-spacing: -0.01em;
+    margin: 0 0 9px 2px;
+}
+
+.trouble-card {
+    padding: 10px;
+}
+
+.trouble-video {
+    display: block;
+    width: 100%;
+    border-radius: 8px;
+    background: #000;
+}
+
+.trouble-caption {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.45;
+    padding: 9px 4px 2px;
+}
+
+.trouble-caption b {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.group-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 5px 10px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--card-border);
+}
+
+.row:last-child { border-bottom: none; }
+
+.row-label { color: var(--text); }
+
+.row-value {
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pill-btn {
+    background: var(--pill-bg);
+    border: 1px solid var(--pill-border);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    transition: var(--transition);
+}
+
+.pill-btn:hover { border-color: var(--accent); }
+.pill-btn:active { transform: scale(0.97); }
+
+/* Segmented control (macOS style) */
+.segmented {
+    display: inline-flex;
+    background: var(--seg-bg);
+    border-radius: 8px;
+    padding: 2px;
+    gap: 1px;
+}
+
+.seg {
+    border: none;
+    background: transparent;
+    color: var(--text);
+    padding: 3px 14px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.seg.active {
+    background: var(--seg-active);
+    color: var(--seg-active-text);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Layout ──────────────────────────────────────────────────── */
+
+#app {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Bare gray tool icons — no button chrome, like macOS utility
+   popovers. They sit just below the native drag strip (top 34px of
+   the window is a real NSView drag region added in Swift), with the
+   right inset matching the top inset.                              */
+.section-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    width: 100%;
+    margin-top: 36px;
+    padding-right: 8px;
+    margin-bottom: 2px;
+    flex-shrink: 0;
+}
+
+.tool-btn {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    border-radius: 7px;
+    padding: 0;
+    color: var(--tb-icon);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.tool-btn svg {
+    width: 19px;
+    height: 19px;
+    display: block;
+}
+
+.tool-btn:hover {
+    color: var(--text);
+    background: var(--row-hover);
+}
+
+.tool-btn:active {
+    color: var(--accent);
+    transform: scale(0.92);
+}
+
+/* Troubleshoot button carries icon + label text (settings stays
+   icon-only). Bare gray styling, same as the other tool buttons.  */
+.tool-btn-label {
+    width: auto;
+    padding: 0 10px;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: inherit;
+}
+
+.tool-btn-label svg {
+    width: 17px;
+    height: 17px;
+}
+
+main {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    overflow: hidden;
+}
+
+/* ── Keyboard section ─────────────────────────────────────────── */
+
+.keyboard-section {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 28px 28px;
+    overflow: auto;
+}
+
+.modifier-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.mod-label {
+    font-size: 13px;
+    color: var(--muted);
+    margin-right: 4px;
+}
+
+.mod-btn {
+    background: var(--surface-2);
+    border: 1px solid var(--card-border);
+    color: var(--key-text);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.mod-btn:hover {
+    border-color: var(--key-text-dim);
+    color: var(--text);
+}
+
+.mod-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 12px var(--accent-glow);
+}
+
+.clear-btn {
+    color: var(--muted) !important;
+    border-style: dashed !important;
+}
+
+.hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-left: 12px;
+}
+
+/* ── Virtual keyboard ────────────────────────────────────────── */
+/* Key metrics derive from --key-size. The media queries at the
+   bottom switch between 50px (big) and 36px (small).             */
+
+.keyboard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--key-gap);
+    padding: calc(var(--key-size) * 0.4);
+    background: var(--surface);
+    border-radius: 14px;
+    border: 1px solid var(--card-border);
+    box-shadow: var(--card-shadow);
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* ── Focus overlay (shown when webview doesn't have keyboard focus) ── */
+
+.focus-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--focus-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    transition: opacity 200ms ease;
+}
+
+.focus-overlay.focused {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.focus-overlay-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    color: var(--muted);
+}
+
+.focus-overlay-icon {
+    font-size: 48px;
+    opacity: 0.6;
+}
+
+.focus-overlay-text {
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.kb-row {
+    display: flex;
+    gap: var(--key-gap);
+}
+
+.key {
+    flex: 1 1 0;
+    min-width: var(--key-size);
+    height: var(--key-size);
+    background: var(--key-bg);
+    border: 1px solid var(--key-border);
+    border-radius: min(var(--key-radius), calc(var(--key-size) * 0.16));
+    box-shadow: var(--key-shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--key-size) * 0.32);
+    font-weight: 500;
+    color: var(--key-text);
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+    user-select: none;
+    overflow: hidden;
+}
+
+.key:hover {
+    background: var(--key-bg-hover);
+    border-color: var(--key-text-dim);
+    transform: translateY(-1px);
+}
+
+.key.special {
+    font-size: calc(var(--key-size) * 0.24);
+    color: var(--key-text-dim);
+    background: var(--surface-2);
+}
+
+.key.modifier-key {
+    font-size: calc(var(--key-size) * 0.22);
+}
+
+.key.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent), 0 0 16px var(--accent-glow);
+    background: var(--accent-dim);
+    color: var(--text);
+    transform: translateY(-2px);
+}
+
+.key.pressed {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+    transform: translateY(1px);
+}
+
+.key.has-remap::after {
+    content: "";
+    position: absolute;
+    top: calc(var(--key-size) * 0.1);
+    right: calc(var(--key-size) * 0.1);
+    width: calc(var(--key-size) * 0.12);
+    height: calc(var(--key-size) * 0.12);
+    min-width: 4px;
+    min-height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent-glow);
+}
+
+.key-char {
+    pointer-events: none;
+}
+
+/* Original character (greyed out when key is remapped) */
+.key-original {
+    font-size: calc(var(--key-size) * 0.18);
+    color: var(--key-text-dim);
+    line-height: 1;
+    margin-bottom: 2px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms ease;
+}
+
+.key.remapped .key-char {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.key.remapped {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+}
+
+/* Width multipliers */
+.key.w-1-5 { flex: 1.5 1.5 0; }
+.key.w-1-75 { flex: 1.75 1.75 0; }
+.key.w-2 { flex: 2 2 0; }
+.key.w-2-25 { flex: 2.25 2.25 0; }
+.key.w-2-75 { flex: 2.75 2.75 0; }
+.key.w-6-25 { flex: 6.25 6.25 0; }
+
+/* ── Remap panel ─────────────────────────────────────────────── */
+
+.remap-panel {
+    margin-top: 22px;
+    width: 100%;
+    max-width: 640px;
+    background: var(--card);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    box-shadow: 0 0 24px var(--accent-glow);
+    animation: slideUp 200ms ease-out;
+    flex-shrink: 0;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.remap-panel.hidden { display: none; }
+
+.remap-panel-content {
+    padding: 18px 22px;
+}
+
+.remap-info {
+    margin-bottom: 14px;
+}
+
+.remap-combo {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.remap-current {
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.char-display {
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--accent);
+    min-width: 24px;
+}
+
+.existing-badge {
+    font-size: 11px;
+    background: var(--accent-dim);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.existing-badge.hidden { display: none; }
+
+.remap-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+#remap-output {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text);
+    padding: 9px 14px;
+    border-radius: var(--radius);
+    font-size: 15px;
+    font-family: inherit;
+    outline: none;
+    transition: var(--transition);
+    user-select: text;
+    -webkit-user-select: text;
+}
+
+#remap-output:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent-glow);
+}
+
+.save-btn {
+    background: var(--accent);
+    border: none;
+    color: #fff;
+    padding: 9px 20px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.save-btn:hover { filter: brightness(1.12); }
+.save-btn:active { transform: scale(0.97); }
+
+.cancel-btn {
+    background: transparent;
+    border: 1px solid var(--card-border);
+    color: var(--muted);
+    padding: 9px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 14px;
+    transition: var(--transition);
+}
+
+.cancel-btn:hover {
+    color: var(--text);
+    border-color: var(--key-text-dim);
+}
+
+/* ── Remaps sidebar ───────────────────────────────────────────── */
+/* Scrolls independently — the page itself never scrolls. */
+
+.remaps-sidebar {
+    width: 280px;
+    margin: 14px 14px 14px 0;
+    background: var(--sidebar-bg);
+    backdrop-filter: blur(28px) saturate(1.5);
+    -webkit-backdrop-filter: blur(28px) saturate(1.5);
+    border: 1px solid var(--card-border);
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
+    padding: 16px 8px 14px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.remaps-sidebar h2 {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--muted);
+    padding: 0 10px;
+}
+
+/* Plain stock list — rows get a rounded hover fill, macOS-style */
+.remaps-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.remap-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    border-radius: 7px;
+    transition: var(--transition);
+    animation: fadeIn 200ms ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.remap-item:hover {
+    background: var(--row-hover);
+}
+
+.remap-item-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    flex: 1;
+    min-width: 0;
+}
+
+.remap-key {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.remap-arrow {
+    color: var(--muted);
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+/* Grey "+" separator in keyboard combos (remap panel) */
+.combo-sep {
+    color: var(--muted);
+    font-weight: 400;
+}
+
+.remap-output {
+    color: var(--text);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.remap-delete {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 13px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: var(--transition);
+    flex-shrink: 0;
+    margin-left: 8px;
+    opacity: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remap-item:hover .remap-delete,
+.remap-delete:focus-visible {
+    opacity: 1;
+}
+
+.remap-delete:hover {
+    color: var(--danger);
+    background: var(--bg);
+}
+
+.empty-msg {
+    font-size: 13px;
+    text-align: center;
+    padding: 20px 0;
+}
+
+.muted { color: var(--muted); }
+.hidden { display: none !important; }
+
+/* ── Scrollbar ───────────────────────────────────────────────── */
+/* Thumb is transparent unless the element has the .scrolling class
+   (toggled by JS while scrolling) — macOS-style overlay behavior.   */
+
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: transparent; border-radius: 4px; }
+.scrolling::-webkit-scrollbar-thumb { background: var(--key-border); }
+.scrolling::-webkit-scrollbar-thumb:hover { background: var(--key-text-dim); }
+
+/* ── Responsive ──────────────────────────────────────────────── */
+/* Three states, two keyboard sizes — no scaling math:
+     ≥1180px  big keys (50px) + sidebar
+     960–1179 small keys (36px) + sidebar
+     <960px   small keys, stacked (remaps below)                  */
+
+@media (max-width: 1179px) {
+    :root { --key-size: 36px; --key-gap: 4px; }
+}
+
+@media (max-width: 959px) {
+    main { flex-direction: column; }
+    .remaps-sidebar {
+        width: auto;
+        margin: 8px 14px 14px;
+        padding: 14px 8px;
+        max-height: 42%;
+        flex-shrink: 0;
+    }
+    .keyboard-section { padding: 0 14px 18px; }
+    .hint { display: none; }
+}
